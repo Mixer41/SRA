@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="UTF-8" />
+   
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="stylesheet" href="css/style.css" />
+       
+    <title>Frontend</title>
+  </head>
+  <body class="form-control">
+    <h1 style="text-align: center;">Чем мы можем Вам помочь?</h1>
+    <form name="registration" onSubmit="return formValidation();">
+      <ul>
+        <li><label for="surname">Фамилия:</label></li>
+        <li><input type="text" id="surname" size="50" required/></li>
+        <li><label for="name">Имя:</label></li>
+        <li><input type="text" id="name" size="50" required/></li>
+        <li><label for="patronymic">Отчество:</label></li>
+        <li><input type="text" id="patronymic" size="50" required/></li>
+        <li><label for="phone">Введите номер телефона:</label></li>
+        <li>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            pattern="[\+]\d{11}"
+             minlength="12" maxlength="12"
+            required
+          />
+        </li>
+        <li><small> Например: +7123456789</small</li>
+        <li><label for="appeal">Обращение:</label></li>
+        <li><textarea name="appeal" id="appeal"></textarea></li>
+      </ul>
+      <br>
+      <button  class="btn" id="submit" type="submit" onclick="sendJSON()">Отправить</button>
+    </form>
+  </p>
+
+    <script src="libs\jquery\jquery-3.6.1.js"></script>
+
+    <script src="ts\main.js"></script>
+
+    <script>
+     
+      function sendJSON() {
+        
+        let surname = document.querySelector('#surname');
+        let name = document.querySelector('#name');
+        let patronymic = document.querySelector('#patronymic');
+        let phone = document.querySelector('#phone');
+        let appeal = document.querySelector('#appeal');
+        let xhr = new XMLHttpRequest();
+        let url = "http://localhost:8888/";
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            result.innerHTML = this.responseText;
+          }
+        };
+
+        var data = JSON.stringify({ "surname": surname.value, "name": name.value ,"patronymic": patronymic.value ,"phone": phone.value ,"appeal": appeal.value });
+        
+        if( surname.value != "" && name.value != "" && patronymic.value != "" && phone.value != "" && appeal.value != ""){
+          xhr.send(data);
+        }
+        
+      }
+    </script>
+  </body>
+</html>
